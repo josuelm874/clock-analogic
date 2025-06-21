@@ -14,6 +14,13 @@
       justify-content: center;
       overflow: hidden;
     }
+    .container {
+  background: #000;
+  border: 1px solid #ffffff66;
+  border-radius: 16px;
+  padding: 12px;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.05);
+}
 
     .clock {
       width: 200px;
@@ -77,12 +84,13 @@
 </head>
 <body>
 
-  <div class="clock" id="clock">
-    <div class="hand hour" id="hour"></div>
-    <div class="hand minute" id="minute"></div>
-    <div class="hand second" id="second"></div>
-    <div class="center-dot"></div>
-  </div>
+  <div class="container">
+    <div class="clock" id="clock">
+      <div class="hand hour" id="hour"></div>
+      <div class="hand minute" id="minute"></div>
+      <div class="hand second" id="second"></div>
+      <div class="center-dot"></div>
+    </div>
 
   <script>
     const clock = document.getElementById('clock');
