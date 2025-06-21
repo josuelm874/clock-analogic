@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <title>Cronômetro Dominium</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background-color: #191919;
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    h1 {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 32px;
+      margin: 20px 0;
+    }
+
+    .modes, .controls {
+      font-family: 'JetBrains Mono', monospace;
+      margin: 15px 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .timer {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 60px;
+      margin: 20px 0;
+      align-items: center;
+    }
+
+    button {
+      background: none;
+      font-family: 'JetBrains Mono', monospace;
+      border: 1px solid #ffffff00;
+      -webkit-tap-highlight-color: transparent;
+      color: #fff;
+      border-radius: 12px;
+      padding: 8px 16px;
+      font-size: 24px;
+      cursor: pointer;
+      align-items: center;
+    }
+
+    button:hover {
+      font-family: 'JetBrains Mono', monospace;
+      background-color: #ffffff00;
+      color: #ffffff;
+      align-items: center;
+    }
+
+    button:focus {
+      outline: none;
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0);
+      border: none
+    }
+    button:focus,
+button:active,
+button:hover {
+  outline: none !important;
+  box-shadow: none !important;
+  transform: none !important;
+  border: 1px solid #ffffff00 !important;
+  padding: 8px 16px !important;
+}
+
+    img {
+      font-family: 'JetBrains Mono', monospace;
+      width: 16px;
+      height: 16px;
+      align-items: center;
+    }
+
+    /* Impede barra de rolagem */
+    * {
+      box-sizing: border-box;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Método Pomodoro</h1>
+
+  <div class="modes">
+    <button onclick="setMode(25, 5)">Tático</button>
+    <button onclick="setMode(30, 10)">Estratégico</button>
+    <button onclick="setMode(45, 15)">Total</button>
+  </div>
+
+  <div class="timer" id="timer">25:00</div>
+
+  <div class="controls">
+    <button onclick="startTimer()"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAACXBIWXMAAAsTAAALEwEAmpwYAAABa0lEQVR4nO3WP0hWYRTH8aspgkQ0KAYiiA1JCi3OoairDtaaQ7U01NiUKOLQ2GiDoKMO4iLo5OCum+DSJkY2FP1Boj5x41y7SA6vvs9t0N92nj/ne5+H85z7y7JLLzRgEE/RWyV0xV/9xCK6UoPHAriDGRxG/BkdKcGvAvQ44uvxAatoRTceoKne4OkAT54xvxTzexivEnwbm6Ua2MJAcnAhjGA31v7CMnqy1OBcaMQjHMSeY7zBzSwluFAU3Ut8ir0fI27JUoILoS1O/CNy7ONh3htOFqUAl3L0Y71UgNu4mxx8qgDzRpTrCO2VgEsFOB85n1QNflspGKOlt/4h+VVXXlz+x3PCC3wpXetzNNeSYPqc4Hf4jtdJWybuo68Ud+JWzcAafov3sBFrdrJ6yRngONFCeLDCCAzVEzz1D+szi68x/h7PUlifiQDsnjJ73zCHG3UFFsI1rFVub0v9dTjvrbjzZ/BK2cX1GxWM8IOylYt9AAAAAElFTkSuQmCC" alt="play"></button>
+    <button onclick="pauseTimer()"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAACXBIWXMAAAsTAAALEwEAmpwYAAABZElEQVR4nO2WvUrEUBCF488KarOFFq4gYiGbxrVRxELSbO0DWOyWWilYWW1eQvyFfQa1s7ATxUYrLcRX0MpSPhkYIYSbySaSWJgDae6ZmY97cxOO51X6KwHTwBnwArzp8wpcAi2jbxm40tqfPplxKjPToMPAPcl6BxqOvlngw+i7k9kW2NfCJ6AeWa8Bh+ptO/p21JOTqkXW68CDer4FDrSo7/C66oUOL1Sv6/D66gUWeE2LjsoGDwFbCe+xOLAIGPMcKnrHc8AncJAR3FOvkxcc5LxcK8A1MF8q2FLROx4H2sBo2eBd9TbLBoe/vdVBBf7XR70BfMm/PCNYgoBoPRdY/cmEdQu8COy5vvGBwMACcAOsZgQ3gf1oQMgK7qjXK+KofS16BCZi0ed8gOhzDIzEoo/EKFEzLexJMLPC3oyjr5ES9m7NsBeJt3I8z7F4ewEsGX0tjcDReCszToApE1rJK1DfxF9j5Kuw/eIAAAAASUVORK5CYII=" alt="pause"></button>
+    <button onclick="resetTimer()"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAACXBIWXMAAAsTAAALEwEAmpwYAAABuklEQVR4nO2WP0sDQRDFL1EQTWkVBAttTVCjYiPYaREIksRKQaztTAo7P4EfwSIioiZYCjb+JTaiaO8HsIgiRguV/GTJHBwxXjabVSzy4OBy++a9u53ZmThOG/8VQCfQB4wBw0DvD7wOYAgItGo4C2wDj3zHE7AJTLtGwIqsxU0NI8C5x+QNuADywAFwBZQ968fAILAuv5dMTNMe0RsgCXTX4YWABeBauK/ArpEx1Vy+A59AFghqxqwBHxJn/MXzwJQmdwO4l+vBs/XLumYB4AQ4avIl9+oUndqxcV2BuASdOn8JYF+M5/7SNAg8Ay9AlyXNEWCxEWlAvvbMhqloHopmvx9pUkg7Fo3dopvwI8WElLdoXBDNUT9SWEhFi8aXohn2I6mJUpJ+3GPBNCRapYadD9iSN0xZMFa9XiGnO/4UbnX6c4PduxOtGd0g1TIVMi0YZ90x2UxQVMahmjAJA9OExCqNaLPBKaAiAquaY1F1vozEVIzrhKp52ZPzdL1ql+pNe3KqYpJGpjXb7uYcOR5FaQwFuVfPvH99Io4tUK32nJzJWpRkTa96TSB5DEt7jcm98bFrw/ltfAHxtefF+UvrXAAAAABJRU5ErkJggg==" alt="recurring-appointment"></button>
+  </div>
+
+<script>
+  let studyMinutes = 25;
+  let breakMinutes = 5;
+  let secondsLeft = studyMinutes * 60;
+  let isRunning = false;
+  let isBreak = false;
+  let timerInterval;
+
+  const timerDisplay = document.getElementById('timer');
+
+  function setMode(study, rest) {
+    studyMinutes = study;
+    breakMinutes = rest;
+    isBreak = false;
+    resetTimer();
+  }
+
+  function updateDisplay() {
+    let minutes = Math.floor(secondsLeft / 60);
+    let seconds = secondsLeft % 60;
+    timerDisplay.innerText = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+  }
+
+  function startTimer() {
+    if (!isRunning) {
+      isRunning = true;
+      timerInterval = setInterval(() => {
+        if (secondsLeft > 0) {
+          secondsLeft--;
+          updateDisplay();
+        } else {
+          isBreak = !isBreak;
+          secondsLeft = (isBreak ? breakMinutes : studyMinutes) * 60;
+          updateDisplay();
+          alert(isBreak ? "Hora do descanso!" : "Hora de focar!");
+        }
+      }, 1000);
+    }
+  }
+
+  function pauseTimer() {
+    clearInterval(timerInterval);
+    isRunning = false;
+  }
+
+  function resetTimer() {
+    pauseTimer();
+    secondsLeft = (isBreak ? breakMinutes : studyMinutes) * 60;
+    updateDisplay();
+  }
+
+  updateDisplay();
+</script>
+
+</body>
+</html>
